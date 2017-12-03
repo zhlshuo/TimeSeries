@@ -25,12 +25,34 @@ class QuotesReader:
         return QuotesReader.quotes[ticker]
 
     @staticmethod
+    def getQuote(ticker):
+        indexes = QuotesReader.quotes.index.tolist()
+        try:
+            loc     = indexes.index(Global.Market_Date.strftime('%Y-%m-%d'))
+        except:
+            print('Price for ' + ticker + ' is missing on', Global.Market_Date)
+            return [0]
+        
+        return QuotesReader.quotes.iloc[loc][ticker]
+    
+    @staticmethod
     def getQuotes(ticker, backward=1):
         indexes = QuotesReader.quotes.index.tolist()
         try:
             loc     = indexes.index(Global.Market_Date.strftime('%Y-%m-%d'))
         except:
             print('Price for ' + ticker + ' is missing on', Global.Market_Date)
+            return [0]
+        
+        return QuotesReader.quotes.iloc[loc-backward:loc][ticker].tolist()
+    
+    @staticmethod
+    def getQuotesAsOf(ticker, date, backward=1):
+        indexes = QuotesReader.quotes.index.tolist()
+        try:
+            loc     = indexes.index(date.strftime('%Y-%m-%d'))
+        except:
+            print('Price for ' + ticker + ' is missing on', date)
             return [0]
         
         return QuotesReader.quotes.iloc[loc-backward:loc][ticker].tolist()

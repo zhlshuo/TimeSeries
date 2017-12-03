@@ -50,7 +50,7 @@ class Stock(Asset):
         self.ticker = ticker
     
     def price(self):
-        return QR.getQuotes(self.ticker)[0]
+        return QR.getQuote(self.ticker)
 
     def __eq__(self, other):
         return self.ticker == other.ticker

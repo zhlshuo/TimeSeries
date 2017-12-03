@@ -8,10 +8,11 @@ from QuotesReader import QuotesReader as QR
 class BackTester:
     
     # Daily Mark to Market PNL
-    PNLs = [1000000]
+    PNLs           = [1000000]
+    cash_flows     = [1000000]
+    portfolio_vals = [0]
 
     instructions = []
-    portfolios   = []
     dt_range     = []
     
     strategy = None
@@ -35,11 +36,17 @@ class BackTester:
             instruction = self.strategy.instruction()
             self.instructions.append(instruction)
             
-            cost = portfolio.exectute(instruction)
-            self.portfolios.append(portfolio)
-    
-            old_pnl = self.PNLs[-1]
-            new_pnl = old_pnl - cost + portfolio.price()
+            # calculatet the cash flows and portfolio value saperately, PNL will be the sum of these two
+            if instruction is None:
+                self.cash_flows.append(self.cash_flows[-1])
+            else:
+                cost = portfolio.exectute(instruction)
+                self.cash_flows.append(self.cash_flows[-1] - cost)  
+            
+            self.portfolio_vals.append(portfolio.price())
+            
+            new_pnl = self.cash_flows[-1] + self.portfolio_vals[-1]
+            
             self.PNLs.append(new_pnl)
     
     def plot(self):
