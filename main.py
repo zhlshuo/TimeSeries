@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     start = time.time()
     
-    start_date = dt.date(2014, 1, 1)
+    start_date = dt.date(2005, 1, 3)
     end_date   = dt.date(2015, 1, 1)
     
     macd = MACD(start_date = start_date)

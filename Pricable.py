@@ -74,7 +74,7 @@ class StockOption(Asset):
         self.underlying = underlying
     
     def price(self):
-        spot = QR.getQuotes(self.underlying)[0]
+        spot = QR.getQuote(self.underlying)
         return BlackShcoles(self.strike, self.timeToExp, 0.01, 0.01, spot)
     
     def __eq__(self, other):

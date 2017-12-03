@@ -7,6 +7,8 @@ from QuotesReader import QuotesReader as QR
 
 class BackTester:
     
+    debug_info = []
+    
     # Daily Mark to Market PNL
     PNLs           = [1000000]
     cash_flows     = [1000000]
@@ -31,6 +33,7 @@ class BackTester:
         self.dt_range = date_range(self.start_date, self.end_date)
         
         for dt in self.dt_range:
+            
             Global.Market_Date = dt
             
             instruction = self.strategy.instruction()
@@ -48,6 +51,8 @@ class BackTester:
             new_pnl = self.cash_flows[-1] + self.portfolio_vals[-1]
             
             self.PNLs.append(new_pnl)
+            
+            self.debug_info.append((dt, instruction, self.cash_flows[-1], self.portfolio_vals[-1], self.PNLs[-1]))
     
     def plot(self):
         plt.plot(self.dt_range, self.PNLs[1:])
