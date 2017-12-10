@@ -4,6 +4,7 @@ import Global
 class QuotesReader:
     
     quotes = None
+    trading_dates = None
     
     @staticmethod
     def init():
@@ -11,6 +12,7 @@ class QuotesReader:
             raw_quotes = pd.read_csv('../stock_quotes.csv', header=0)
             QuotesReader.quotes = pd.pivot_table(raw_quotes, values='Adj_Close', index='Date', columns='Symbol')
             QuotesReader.quotes = QuotesReader.quotes.fillna(method='bfill')
+            QuotesReader.trading_dates = QuotesReader.quotes.index.tolist()
     
     @staticmethod
     def getAllQuotesAsDF():
@@ -31,7 +33,7 @@ class QuotesReader:
         try:
             loc     = indexes.index(Global.Market_Date.strftime('%Y-%m-%d'))
         except:
-            print 'Price for ' + ticker + ' is missing on', Global.Market_Date
+            print('Price for ' + ticker + ' is missing on', Global.Market_Date)
             return 0
         
         return QuotesReader.quotes.iloc[loc][ticker]
@@ -42,7 +44,7 @@ class QuotesReader:
         try:
             loc     = indexes.index(Global.Market_Date.strftime('%Y-%m-%d'))
         except:
-            print 'Price for ' + ticker + ' is missing on', Global.Market_Date
+            print('Price for ' + ticker + ' is missing on', Global.Market_Date)
             return [0]
         
         return QuotesReader.quotes.iloc[loc-backward:loc][ticker].tolist()
@@ -53,7 +55,7 @@ class QuotesReader:
         try:
             loc     = indexes.index(date.strftime('%Y-%m-%d'))
         except:
-            print 'Price for ' + ticker + ' is missing on', date
+            print('Price for ' + ticker + ' is missing on', date)
             return [0]
         
         return QuotesReader.quotes.iloc[loc-backward:loc][ticker].tolist()
@@ -64,7 +66,7 @@ class QuotesReader:
         try:
             loc     = indexes.index(start_date.strftime('%Y-%m-%d'))
         except:
-            print 'Price for ' + ticker + ' is missing on', Global.Market_Date
+            print('Price for ' + ticker + ' is missing on', Global.Market_Date)
             return [0]
         
         if end_date is None:

@@ -30,7 +30,8 @@ class BackTester:
         
     def back_test(self):
         portfolio     = Portfolio()
-        self.dt_range = date_range(self.start_date, self.end_date)
+        # for simplicity, if quote is not available at that date, we assume it is not a trading date
+        self.dt_range = [dt for dt in date_range(self.start_date, self.end_date) if dt.strftime('%Y-%m-%d') in QR.trading_dates]
         
         for dt in self.dt_range:
             
