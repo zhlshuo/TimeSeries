@@ -2,6 +2,7 @@ from Backtester import BackTester
 from Strategy import MACD
 import datetime as dt
 import time
+from RiskManagement.VaR import VarCovarVaR
 
 if __name__ == '__main__':
 
@@ -15,6 +16,10 @@ if __name__ == '__main__':
     backtester = BackTester(macd, start_date, end_date)
     backtester.back_test()
     backtester.plot()
+
+    VaR = VarCovarVaR(backtester.portfolio.assets)
+    VaR.calculate()
+    VaR.print_text()
 
     end = time.time()
     print('time used:', end - start)    

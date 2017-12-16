@@ -18,7 +18,8 @@ class BackTester:
     instructions = []
     dt_range     = []
     
-    strategy = None
+    strategy  = None
+    portfolio = None
 
     start_date = None
     end_date   = None
@@ -31,7 +32,7 @@ class BackTester:
         TC.init()
         
     def back_test(self):
-        portfolio     = Portfolio()
+        self.portfolio     = Portfolio()
         # for simplicity, if quote is not available at that date, we assume it is not a trading date
         self.dt_range = [dt for dt in date_range(self.start_date, self.end_date) if dt.strftime('%Y-%m-%d') in QR.trading_dates]
         
@@ -47,10 +48,10 @@ class BackTester:
                 self.cash_flows.append(self.cash_flows[-1])
             else:
                 for instruction in instructions:
-                    cost = portfolio.exectute(instruction)
+                    cost = self.portfolio.exectute(instruction)
                     self.cash_flows.append(self.cash_flows[-1] - cost)  
             
-            self.portfolio_vals.append(portfolio.price())
+            self.portfolio_vals.append(self.portfolio.price())
             
             new_pnl = self.cash_flows[-1] + self.portfolio_vals[-1]
             
