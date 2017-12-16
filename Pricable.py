@@ -1,4 +1,5 @@
 from QuotesReader import QuotesReader as QR
+from TransactionCost import TransactionCost as TC
 
 class Portfolio:
     
@@ -6,17 +7,17 @@ class Portfolio:
     
     def exectute(self, instruction):
         instrumentType, ticker, quantity, economics = instruction
-        cost = 0
+        cost = TC.calculate(ticker, quantity)
         
         if instrumentType == 'Stock':
             stock = Stock(ticker)
             self.assets[stock] = quantity if stock not in self.assets else quantity + self.assets.get(stock)
-            cost = stock.price() * quantity
+            cost += stock.price() * quantity
         elif instrumentType == 'StockOption':
             strike, timeToExp = economics
             stockOption = StockOption(ticker, strike, timeToExp)
             self.assets[stockOption] = quantity if stockOption not in self.assets else quantity + self.assets.get(stockOption)
-            cost = stockOption.price() * quantity
+            cost += stockOption.price() * quantity
         else:
             raise ValueError(instrumentType + ' is not supported now')
             

@@ -4,6 +4,7 @@ from HolidayCalendar import date_range
 import Global
 from Pricable import Portfolio
 from QuotesReader import QuotesReader as QR
+from TransactionCost import TransactionCost as TC
 
 class BackTester:
     
@@ -27,6 +28,7 @@ class BackTester:
         self.start_date = start_date
         self.end_date = end_date
         QR.init()
+        TC.init()
         
     def back_test(self):
         portfolio     = Portfolio()

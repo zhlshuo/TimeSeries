@@ -4,6 +4,7 @@ import Global
 class QuotesReader:
     
     quotes = None
+    volumes = None
     trading_dates = None
     
     @staticmethod
@@ -13,6 +14,20 @@ class QuotesReader:
             QuotesReader.quotes = pd.pivot_table(raw_quotes, values='Adj_Close', index='Date', columns='Symbol')
             QuotesReader.quotes = QuotesReader.quotes.fillna(method='bfill')
             QuotesReader.trading_dates = QuotesReader.quotes.index.tolist()
+            
+            QuotesReader.volumes = pd.pivot_table(raw_quotes, values='Volume', index='Date', columns='Symbol')
+            QuotesReader.volumes = QuotesReader.volumes.fillna(method='bfill')
+    
+    @staticmethod
+    def getVolume(ticker):
+        indexes = QuotesReader.volumes.index.tolist()
+        try:
+            loc     = indexes.index(Global.Market_Date.strftime('%Y-%m-%d'))
+        except:
+            print('Volume for ' + ticker + ' is missing on', Global.Market_Date)
+            return 0
+        
+        return QuotesReader.volumes.iloc[loc][ticker]
     
     @staticmethod
     def getAllQuotesAsDF():
