@@ -39,15 +39,16 @@ class BackTester:
             
             Global.Market_Date = dt
             
-            instruction = self.strategy.instruction()
-            self.instructions.append(instruction)
+            instructions = self.strategy.instruction()
+            self.instructions.append(instructions)
             
             # calculatet the cash flows and portfolio value saperately, PNL will be the sum of these two
-            if instruction is None:
+            if instructions is None:
                 self.cash_flows.append(self.cash_flows[-1])
             else:
-                cost = portfolio.exectute(instruction)
-                self.cash_flows.append(self.cash_flows[-1] - cost)  
+                for instruction in instructions:
+                    cost = portfolio.exectute(instruction)
+                    self.cash_flows.append(self.cash_flows[-1] - cost)  
             
             self.portfolio_vals.append(portfolio.price())
             
@@ -55,7 +56,7 @@ class BackTester:
             
             self.PNLs.append(new_pnl)
             
-            self.debug_info.append((dt, instruction, self.cash_flows[-1], self.portfolio_vals[-1], self.PNLs[-1]))
+            self.debug_info.append((dt, instructions, self.cash_flows[-1], self.portfolio_vals[-1], self.PNLs[-1]))
     
     def plot(self):
         plt.plot(self.dt_range, self.PNLs[1:])
