@@ -15,15 +15,16 @@ class VarCovarVaR:
         self.time_window      = time_window
         
     def portfolio_std_dev(self):
-        prices  = []
+        returns = []
         weights = []
         
         for asset, quantity in self.portfolio.items():
-            prices.append(QR.getQuotes(asset.ticker, self.time_window))
+            prices = QR.getQuotes(asset.ticker, self.time_window)
+            returns.append([np.log(prices[i+1]/prices[i]) for i in range(len(prices)-1)])
             weights.append(QR.getQuote(asset.ticker) * quantity)
             self.notional += QR.getQuote(asset.ticker) * quantity
             
-        cov = np.cov(prices)
+        cov = np.cov(returns)
         weights = np.array(weights)
         weights = weights/np.sum(weights)
         
