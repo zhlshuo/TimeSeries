@@ -1,3 +1,8 @@
+"""
+Created on Sun Dec 24 09:00:27 2017
+
+@author: lishuo
+"""
 from QuotesReader import QuotesReader as QR
 import numpy as np
 #import datetime
