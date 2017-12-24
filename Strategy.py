@@ -33,6 +33,7 @@ class MACD(Strategy):
             start_date = Global.Market_Date
         
         self.eligibe_stocks    = MACDStockPicker().EligibleStockList()
+        #self.eligibe_stocks    = [MACDStockPicker.stock]
         self.long_term_window  = {ticker:26 for ticker in self.eligibe_stocks}
         self.short_term_window = {ticker:12 for ticker in self.eligibe_stocks}
         self.macd_window       = {ticker:9 for ticker in self.eligibe_stocks}
@@ -80,9 +81,9 @@ class MACD(Strategy):
             
             # if cross over, do transaction
             if self.MACDs[ticker][-1] > self.signal_line[ticker][-1] and self.MACDs[ticker][-2] < self.signal_line[ticker][-2]:
-                instructions.append(('Stock', ticker, 100, None))
+                instructions.append(('Stock', ticker, 500, None))
             elif self.MACDs[ticker][-1] < self.signal_line[ticker][-1] and self.MACDs[ticker][-2] > self.signal_line[ticker][-2]:
-                instructions.append(('Stock', ticker, -100, None))
+                instructions.append(('Stock', ticker, -500, None))
         
         if len(instructions) == 0:
             return None

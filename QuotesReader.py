@@ -11,7 +11,7 @@ class QuotesReader:
     def init():
         if QuotesReader.quotes is None:
             raw_quotes = pd.read_csv('../stock_quotes.csv', header=0)
-            QuotesReader.quotes = pd.pivot_table(raw_quotes, values='Adj_Close', index='Date', columns='Symbol')
+            QuotesReader.quotes = pd.pivot_table(raw_quotes, values='Close', index='Date', columns='Symbol')
             QuotesReader.quotes = QuotesReader.quotes.fillna(method='bfill')
             QuotesReader.trading_dates = QuotesReader.quotes.index.tolist()
             

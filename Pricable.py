@@ -3,7 +3,10 @@ from TransactionCost import TransactionCost as TC
 
 class Portfolio:
     
-    assets = {}
+    assets = None
+    
+    def __init__(self):
+        self.assets = {}
     
     def exectute(self, instruction):
         instrumentType, ticker, quantity, economics = instruction

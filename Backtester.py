@@ -32,6 +32,15 @@ class BackTester:
         TC.init()
         
     def back_test(self):
+        self.debug_info = []
+    
+        # Daily Mark to Market PNL
+        self.PNLs           = [1000000]
+        self.cash_flows     = [1000000]
+        self.portfolio_vals = [0]
+    
+        self.instructions = []
+        self.dt_range     = []
         self.portfolio     = Portfolio()
         # for simplicity, if quote is not available at that date, we assume it is not a trading date
         self.dt_range = [dt for dt in date_range(self.start_date, self.end_date) if dt.strftime('%Y-%m-%d') in QR.trading_dates]
@@ -62,5 +71,5 @@ class BackTester:
     def plot(self):
         plt.plot(self.dt_range, self.PNLs[1:])
         plt.ylabel('PNL')
-        plt.title('Strategy Back-Testing')
+        plt.title('Strategy Back-Testing with Transaction Cost')
         plt.show()
